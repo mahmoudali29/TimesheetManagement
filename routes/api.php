@@ -7,6 +7,9 @@ use App\Http\Controllers\Api\ProjectAttributeController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\AuthController;
 
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\TimesheetController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,8 +39,14 @@ Route::middleware('auth:api')->group(function () {
 
     // Filter projects by attributes
     Route::get('/projects', [ProjectController::class, 'filterByAttributes']);
+    Route::get('/dynamic_search', [ProjectController::class, 'filterByDynamicAttributes']);
+    
 
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('timesheets', TimesheetController::class);
 });
 
 Route::post('/register', [AuthController::class, 'register']);
