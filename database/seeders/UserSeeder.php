@@ -16,6 +16,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+        // Static Test User
+        User::create([
+            'first_name' => 'Mahmoud',
+            'last_name'  => 'Ali',
+            'email'      => 'admin@admin.com',
+            'password'   => Hash::make('password123'),
+        ]);
+
         $faker = Faker::create();
 
         for ($i = 1; $i <= 10; $i++) {

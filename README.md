@@ -1,64 +1,201 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Timesheet Management API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based API for managing users, projects, and timesheets with dynamic attributes.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Setup Instructions
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Follow these steps to install and set up the project:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **1️⃣ Clone the Repository**
+```bash
+git clone https://github.com/mahmoudali29/TimesheetManagement.git
+cd TimesheetManagement
+```
 
-## Learning Laravel
+### **2️⃣ Install Dependencies**
+```bash
+composer install
+npm install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### **3️⃣ Set Up Environment Variables**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Edit the `.env` file and configure database credentials:
+```env
+DB_DATABASE=timesheet_management
+DB_USERNAME=root
+DB_PASSWORD=yourpassword
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **4️⃣ Import the Database**
+```bash
+mysql -u root -p timesheet_management < timesheet_management.sql
+```
 
-## Laravel Sponsors
+### **5️⃣ Run Migrations & Seeders**
+```bash
+php artisan migrate --seed
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### **6️⃣ Install Passport for Authentication**
+```bash
+php artisan passport:install
+```
 
-### Premium Partners
+### **7️⃣ Start the Application**
+```bash
+php artisan serve
+```
+Your API is now running at `http://127.0.0.1:8000/`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+---
 
-## Contributing
+## 📌 API Documentation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🔹 Authentication Endpoints
+| Method | Endpoint           | Description |
+|--------|-------------------|-------------|
+| POST   | `/api/register`   | Register a new user |
+| POST   | `/api/login`      | Authenticate and get a token |
+| POST   | `/api/logout`     | Logout and revoke token |
 
-## Code of Conduct
+### 🔹 User Management
+| Method | Endpoint           | Description |
+|--------|-------------------|-------------|
+| GET    | `/api/users`       | Get all users |
+| GET    | `/api/users/{id}`  | Get a single user |
+| POST   | `/api/users`       | Create a user |
+| PUT    | `/api/users/{id}`  | Update user details |
+| DELETE | `/api/users/{id}`  | Delete a user |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 🔹 Project Management
+| Method | Endpoint           | Description |
+|--------|-------------------|-------------|
+| GET    | `/api/projects`    | Get all projects |
+| GET    | `/api/projects/{id}` | Get a project with attributes |
+| POST   | `/api/projects`    | Create a new project |
+| PUT    | `/api/projects/{id}` | Update project details |
+| DELETE | `/api/projects/{id}` | Delete a project |
 
-## Security Vulnerabilities
+### 🔹 Timesheet Management
+| Method | Endpoint           | Description |
+|--------|-------------------|-------------|
+| GET    | `/api/timesheets`  | Get all timesheets |
+| GET    | `/api/timesheets/{id}` | Get a specific timesheet |
+| POST   | `/api/timesheets`  | Log a new timesheet entry |
+| PUT    | `/api/timesheets/{id}` | Update a timesheet entry |
+| DELETE | `/api/timesheets/{id}` | Delete a timesheet entry |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🔹 Dynamic Filtering API
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| GET | `/api/dynamic_search?filters[name:like]=Project` | Search for projects with "Project" in the name |
+| GET | `/api/dynamic_search?filters[status]=active&filters[department:like]=IT` | Get active projects in IT department |
+| GET | `/api/dynamic_search?filters[budget:gt]=10000` | Get projects with budget greater than 10,000 |
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📌 Example Requests & Responses
+
+### **1️⃣ Register a New User**
+**Request:**
+```bash
+POST /api/register
+```
+**Body:**
+```json
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "johndoe@example.com",
+    "password": "password123"
+}
+```
+**Response:**
+```json
+{
+    "message": "User registered successfully",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJS..."
+}
+```
+
+### **2️⃣ Login and Get Token**
+**Request:**
+```bash
+POST /api/login
+```
+**Body:**
+```json
+{
+    "email": "admin@admin.com",
+    "password": "password123"
+}
+```
+**Response:**
+```json
+{
+    "message": "Login successful",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJS...",
+    "user": {
+        "id": 1,
+        "first_name": "Mahmoud",
+        "last_name": "Ali",
+        "email": "admin@admin.com"
+    }
+}
+```
+
+### **3️⃣ Get All Projects**
+**Request:**
+```bash
+GET /api/projects
+```
+**Response:**
+```json
+[
+    {
+        "id": 1,
+        "name": "Project Alpha",
+        "status": "active",
+        "attributes": {
+            "department": "IT"
+        }
+    }
+]
+```
+
+---
+
+## 🧑‍💻 Test Credentials
+Use the following credentials for testing:
+
+```json
+{
+    "email": "admin@admin.com",
+    "password": "password123"
+}
+```
+```
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+---
+
+## 📌 Notes
+- **Ensure you include the Bearer Token in API requests.**
+- **Use Postman or any API client to test endpoints.**
+- **If needed, run `php artisan migrate:fresh --seed` to reset the database.**
+
+---
+
+## 🎯 Contributors
+- **Mahmoud Ali**
+
+---
+
+
