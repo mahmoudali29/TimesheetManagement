@@ -7,14 +7,15 @@ use App\Models\Project;
 use App\Models\AttributeValue;
 use Schema;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
+use App\Services\ProjectService;
 class ProjectController extends Controller
 {
 
-    protected $projectRepo;
+    protected $projectService;
 
-    public function __construct(ProjectRepositoryInterface $projectRepo)
+    public function __construct(ProjectService $projectService)
     {
-        $this->projectRepo = $projectRepo;
+        $this->projectService = $projectService;
     }
 
     /**
@@ -22,7 +23,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return response()->json($this->projectRepo->all());
+        return response()->json($this->projectService->all());
         //return response()->json(Project::all());
     }
 
@@ -31,7 +32,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return response()->json($this->projectRepo->find($id));
+        return response()->json($this->projectService->find($id));
         //return response()->json(Project::findOrFail($id));
     }
 
@@ -40,16 +41,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'status' => 'required|in:active,inactive',
-        ]);
-
         $data = $request->validate([
             'name' => 'required',
             'status' => 'required|in:active,inactive'
         ]);
-        return response()->json($this->projectRepo->create($data), 201);
+
+        $project = $this->projectService->create($data);
+
+        return response()->json($project, 201);
 
         // $project = Project::create($request->all());
 
@@ -63,7 +62,7 @@ class ProjectController extends Controller
     {
 
         $data = $request->only(['name', 'status']);
-        return response()->json($this->projectRepo->update($data, $id));
+        return response()->json($this->projectService->update($data, $id));
 
         // $project = Project::findOrFail($id);
         // $project->update($request->all());
@@ -77,7 +76,7 @@ class ProjectController extends Controller
     public function destroy($id)
     {
 
-        $this->projectRepo->delete($id);
+        $this->projectService->delete($id);
         return response()->json(['message' => 'Project deleted']);
 
 
