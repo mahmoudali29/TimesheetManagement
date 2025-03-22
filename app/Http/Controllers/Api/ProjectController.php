@@ -6,18 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\AttributeValue;
 use Schema;
-
+use App\Repositories\Contracts\ProjectRepositoryInterface;
 class ProjectController extends Controller
 {
 
+    protected $projectRepo;
 
+    public function __construct(ProjectRepositoryInterface $projectRepo)
+    {
+        $this->projectRepo = $projectRepo;
+    }
 
     /**
      * Fetch all projects.
      */
     public function index()
     {
-        return response()->json(Project::all());
+        return response()->json($this->projectRepo->all());
+        //return response()->json(Project::all());
     }
 
     /**
@@ -25,7 +31,8 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Project::findOrFail($id));
+        return response()->json($this->projectRepo->find($id));
+        //return response()->json(Project::findOrFail($id));
     }
 
     /**
@@ -38,9 +45,15 @@ class ProjectController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
-        $project = Project::create($request->all());
+        $data = $request->validate([
+            'name' => 'required',
+            'status' => 'required|in:active,inactive'
+        ]);
+        return response()->json($this->projectRepo->create($data), 201);
 
-        return response()->json($project, 201);
+        // $project = Project::create($request->all());
+
+        // return response()->json($project, 201);
     }
 
     /**
@@ -48,10 +61,14 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $project = Project::findOrFail($id);
-        $project->update($request->all());
 
-        return response()->json($project);
+        $data = $request->only(['name', 'status']);
+        return response()->json($this->projectRepo->update($data, $id));
+
+        // $project = Project::findOrFail($id);
+        // $project->update($request->all());
+
+        // return response()->json($project);
     }
 
     /**
@@ -59,9 +76,14 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        Project::destroy($id);
 
-        return response()->json(['message' => 'Project deleted successfully']);
+        $this->projectRepo->delete($id);
+        return response()->json(['message' => 'Project deleted']);
+
+
+        // Project::destroy($id);
+
+        // return response()->json(['message' => 'Project deleted successfully']);
     }
 
 
