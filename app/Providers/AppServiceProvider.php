@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use App\Repositories\Contracts\ProjectRepositoryInterface;
+use App\Repositories\Eloquent\ProjectRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
     }
 
     /**
