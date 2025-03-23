@@ -18,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
+        if ($this->app->environment('local', 'development')) {
+            $this->app->register(\Laravel\Horizon\HorizonServiceProvider::class);
+        }
     }
 
     /**

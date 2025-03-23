@@ -8,6 +8,7 @@ use App\Models\AttributeValue;
 use Schema;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
 use App\Services\ProjectService;
+use Illuminate\Support\Facades\Cache;
 class ProjectController extends Controller
 {
 
@@ -23,8 +24,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return response()->json($this->projectService->all());
-        //return response()->json(Project::all());
+        $projects = Cache::remember('projects_all', 60, function () {
+            return $this->projectService->all();
+        });
+
+        return response()->json($projects);
     }
 
     /**
